@@ -63,3 +63,6 @@ sudo systemctl enable --now dskd
 ## Acknowledgements
 
 Daemon lifecycle structure (start/stop/status/run/restart via PID file, systemd unit layout) adapted from steps shared by tlp.
+
+---
+Copyright © 2026 Usman Olanrewaju. Licensed under the MIT License — see [LICENSE](./LICENSE) for details.
