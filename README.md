@@ -30,7 +30,7 @@ All settings live in `dskd.conf`, sourced by the daemon at startup:
 |---|---|
 | `WATCH_PATH` | Directory to monitor |
 | `LOG_FILE` | Path to the usage log |
-| `INTERVAL` | Seconds between checks |
+| `Dang` | Seconds between checks |
 | `WARN_PERCENT` | Filesystem usage % that triggers a warning |
 | `MAX_LOG_LINES` | Log rotates once it exceeds this many lines |
 
