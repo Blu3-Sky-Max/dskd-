@@ -5,12 +5,12 @@
 # AUTHOR: Usman O. Olanrewaju (Blu3-Sky) 
 # CREATED: 2026/06/08 
 #
-# STEPS USED: shoutout to  tlp for me using there steps for this deamon setups 
+# STEPS USED: shoutout to  tlp for me using there steps for this daemon setups 
 #
 #
 # STATUS: NOT YET COMPLETE BUT RUNNING
 # PURPOSE: 
-# this deamon helps to manage mounted dir
+# this daemon helps to manage mounted Dir
 # lvm
 # autofs
 # nfs 
@@ -34,7 +34,7 @@
 
 
 # Verify if the path is Directory or not with red color for error info
-# for color modification you can use check willam shotts textbook  
+# for color modification you can use check William shotts textbook  
 if [[ ! -d "$WATCH_PATH" ]]; then
     echo -e  "\033[31m[ERROR] WATCH_PATH does not exist or is not a directory: $WATCH_PATH \033[0m" >&2
     exit 1
@@ -137,13 +137,13 @@ echo "Daemon Started [ $(date '+%Y-%m-%d %H:%M:%S')]. Watching: $WATCH_PATH Info
 
         } >> "$LOG_FILE"
 
-# thresold trigger setting i.e if the percentage grows beyond the warn percent it triggers 
+# threshold trigger setting i.e if the percentage grows beyond the warn percent it triggers 
 if (( fs_used_pct >= WARN_PERCENT )); then
 
 # message to show on terminal with color 
              msg="\033[31m[WARN]\033[0m[$Set_timestamp] Filesystem at ${fs_used_pct}% — threshold is ${WARN_PERCENT}%"
 		
-# messsage to show without color 
+# message to show without color 
 	plain_msg="[WARN][$Set_timestamp] Filesystem at ${fs_used_pct}% — threshold is ${WARN_PERCENT}%"
 
 # broadcast message to  every logged-in terminal. check "man wall "
@@ -172,7 +172,7 @@ done
 
 PID_FILE="/tmp/dsk-daemon.pid"
    
-# when you run for the firs time ./dsk-daemon it takes 1 as an arugment cmd=start
+# when you run for the firs time ./dsk-daemon it takes 1 as an argument cmd=start
 #  without no option/argument it cmd=run
 
 cmd="${1:-run}"
