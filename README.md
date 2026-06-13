@@ -58,10 +58,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now dskd
 ```
 
-## Why `df` and not just `du`
 
-`du` reports the size of a directory tree — useful for tracking growth, but not directly comparable against a threshold since it returns human-readable units (e.g. `4.2G`). `df --output=pcent` reports how full the underlying filesystem actually is, as a clean integer — the value the threshold check is built around.
 
 ## Acknowledgements
 
-Daemon lifecycle structure (start/stop/status via PID file, systemd unit layout) adapted from steps shared by tlp.
+Daemon lifecycle structure (start/stop/status/run/restart via PID file, systemd unit layout) adapted from steps shared by tlp.
