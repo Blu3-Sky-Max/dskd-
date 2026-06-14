@@ -15,16 +15,15 @@
 # autofs
 # nfs 
 # dev 
-
-# Date are rotating in 12hr not 24 you can use "man date" to rotate 24hrs
 #  
 # ===========================================================================================================
 
 
 
 
+# There are condition here yet to be applied 
+# Adding one more func later for unmount for thr file system to break  
 
-# Log_file="/var/log/dsk.log" 
 
 # if [ ! -f "Config" ]; then 
  #  exit 25
