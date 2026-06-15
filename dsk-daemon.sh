@@ -68,20 +68,6 @@ get_dir_size() {
 }
 
 # Rotate log if it has grown beyond MAX_LOG_LINES
-rotate_log_if_needed() {
-    if [[ -f "$LOG_FILE" ]]; then
-        local lines
-        lines=$(wc -l < "$LOG_FILE")
-        if (( lines > MAX_LOG_LINES )); then
-            local rotated="${LOG_FILE}.$(date +%Y%m%d-%H%M%S)"
-            mv "$LOG_FILE" "$rotated"
-            echo "[$(date '+%Y-%m-%d %H:%M:%S')] Log rotated → $rotated" >> "$LOG_FILE"
-        fi
-    fi
-}
-
-
-# Rotate log if it has grown beyond MAX_LOG_LINES 
 
 rotate_log_if_needed() {
     if [[ -f "$LOG_FILE" ]]; then
