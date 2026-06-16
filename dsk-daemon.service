@@ -12,11 +12,12 @@ Description=Disk Usage Daemon
 After=network.target multi-user.target NetworkManager.service 
 
 [Service] 
-Type=exec
-ExecStart=/home/blue/dskd/dsk-daemon.sh 
+Type=simple
+ExecStart=/home/blue/bin/dsk-daemon.sh run
+ExecReload=/home/blue/bin/dsk-daemon.sh  Restart
 ExitType=main  
 Restart=on-failure
-RestartSec=5ms 
+RestartSec=25ms 
 
 
 
