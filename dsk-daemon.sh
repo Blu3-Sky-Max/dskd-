@@ -29,11 +29,9 @@ if [ ! -f "$CONF_FILE" ]; then
 	    echo "Configuration file not found: $CONF_FILE"   
 	exit 1
 
-# source lib/conf
-#
   fi 
 
-
+# source lib/conf
  . "$CONF_FILE"
 
 
