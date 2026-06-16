@@ -1,39 +1,50 @@
-#!/bin/bash 
+#!/bin/bash
 
+
+ 
+# debugging on 
+# set -x 
 #  =================================  Disk Daemon Management ================================================
 #
 # AUTHOR: Usman O. Olanrewaju (Blu3-Sky) 
 # CREATED: 2026/06/08 
 #
-# STEPS USED: shoutout to  tlp for me using there steps for this daemon setups 
+# STEPS USED: shoutout to  tlp for me using there steps for this deamon setups 
 #
-#
-# STATUS: NOT YET COMPLETE BUT RUNNING
 # PURPOSE: 
-# this daemon helps to manage mounted Dir
+# this deamon helps to manage mounted dir
 # lvm
 # autofs
 # nfs 
 # dev 
-#  
+
 # ===========================================================================================================
 
+# locator for config
+#
+Locator="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONF_FILE="$Locator/dsk-daemon.conf"
+
+if [ ! -f "$CONF_FILE" ]; then 
+	    echo "Configuration file not found: $CONF_FILE"   
+	exit 1
+
+# source lib/conf
+#
+  fi 
+
+
+ . "$CONF_FILE"
 
 
 
-# There are condition here yet to be applied 
-# Adding one more func later for unmount for thr file system to break  
+rotated= 
 
-
-# if [ ! -f "Config" ]; then 
- #  exit 25
-#else 
- . dsk-daemon.conf  
-# fi 
 
 
 # Verify if the path is Directory or not with red color for error info
-# for color modification you can use check William shotts textbook  
+# for color modification you can use check willam shotts textbook  
+
 if [[ ! -d "$WATCH_PATH" ]]; then
     echo -e  "\033[31m[ERROR] WATCH_PATH does not exist or is not a directory: $WATCH_PATH \033[0m" >&2
     exit 1
@@ -67,7 +78,9 @@ get_dir_size() {
     du -sh "$WATCH_PATH" 2>/dev/null | awk '{print $1}'
 }
 
-# Rotate log if it has grown beyond MAX_LOG_LINES
+
+
+# Rotate log if it has grown beyond MAX_LOG_LINES 
 
 rotate_log_if_needed() {
     if [[ -f "$LOG_FILE" ]]; then
@@ -80,12 +93,12 @@ rotate_log_if_needed() {
         if (( lines > MAX_LOG_LINES )); then
 
 # handle the log_file. date with hr and sec 
-            local rotated="${LOG_FILE}.$(date +%Y%m%d-%H%M%S)"
+             rotated="${LOG_FILE}.$(date +%Y%m%d-%I%M%S)"
 
 # then we mv full log file to log.date we going to have (dsk.log.date) 
             mv "$LOG_FILE" "$rotated"
 
-            echo "[$(date '+%Y-%m-%d %H:%M:%S')] Log rotated → $rotated" >> "$LOG_FILE"
+            echo "[$(date '+%Y-%m-%d %I:%M:%S')] Log rotated → $rotated" >> "$LOG_FILE"
         fi
     fi
 }
@@ -97,17 +110,17 @@ core_machine_loop(){
 
 # Colored output to terminal only
  
-echo -e  "\033[36m Daemon Started \033[0m [$(date '+%Y-%m-%d %H:%M:%S')].\033[36mWatching:\033[0m "$WATCH_PATH" \033[36m Info: \033[0m $(get_fs_info)" 
+echo -e  "\033[36mDaemon Started \033[0m [$(date '+%Y-%m-%d %I:%M:%S')].\033[36mWatching:\033[0m "$WATCH_PATH" \033[36m Info: \033[0m $(get_fs_info)" 
 
 # Clean output to log file only
-echo "Daemon Started [ $(date '+%Y-%m-%d %H:%M:%S')]. Watching: $WATCH_PATH Info: $(get_fs_info)" >> "$LOG_FILE"
+echo "Daemon Started [ $(date '+%Y-%m-%d %I:%M:%S')]. Watching: $WATCH_PATH Info: $(get_fs_info)" >> "$LOG_FILE"
 
 
 #daemon running every sec
 
  while true; do
       local Set_timestamp dir_size fs_used_pct  path_all_size msg plain_msg 
-       Set_timestamp=$(date '+%Y-%m-%d %H:%M:%S') 
+       Set_timestamp=$(date '+%Y-%m-%d %I:%M:%S') 
       dir_size=$(get_dir_size)
       fs_used_pct=$(get_fs_usage_percent)
    	 path_all_size=$(get_fs_info | awk '{print $3}')
@@ -122,14 +135,14 @@ echo "Daemon Started [ $(date '+%Y-%m-%d %H:%M:%S')]. Watching: $WATCH_PATH Info
 
         } >> "$LOG_FILE"
 
-# threshold trigger setting i.e if the percentage grows beyond the warn percent it triggers 
+# thresold trigger setting i.e if the percentage grows beyond the warn percent it triggers 
 if (( fs_used_pct >= WARN_PERCENT )); then
 
 # message to show on terminal with color 
-             msg="\033[31m[WARN]\033[0m[$Set_timestamp] Filesystem at ${fs_used_pct}% — threshold is ${WARN_PERCENT}%"
+             msg="\033[31m(Warning)\033[0m[$Set_timestamp] Filesystem at ${fs_used_pct}% — threshold is ${WARN_PERCENT}%"
 		
-# message to show without color 
-	plain_msg="[WARN][$Set_timestamp] Filesystem at ${fs_used_pct}% — threshold is ${WARN_PERCENT}%"
+# messsage to show without color 
+	plain_msg="(Warning)[$Set_timestamp] Filesystem at ${fs_used_pct}% — threshold is ${WARN_PERCENT}%"
 
 # broadcast message to  every logged-in terminal. check "man wall "
             echo "$msg" | wall  
@@ -151,13 +164,14 @@ done
 
 
 
-
+}
 # ========================= LifeCycle =================================================
 
+kill_pid= 
 
 PID_FILE="/tmp/dsk-daemon.pid"
    
-# when you run for the firs time ./dsk-daemon it takes 1 as an argument cmd=start
+# when you run for the firs time ./dsk-daemon it takes 1 as an arugment cmd=start
 #  without no option/argument it cmd=run
 
 cmd="${1:-run}"
@@ -175,30 +189,30 @@ case $cmd in
       # making the pid file come alive and pass the pid of the core_machine_loop to /tmp/dsk-daemon.pid
         echo $! > "$PID_FILE"
            # confirmation  sent to terminal  when start
-        echo "[INFO] Daemon started in background (PID $!)"
+        echo "(INFO) Daemon started in background (PID $!)"
         ;;
      stop|Stop|STOP)
             # the pid file is alive here 
         if [[ -f "$PID_FILE" ]]; then
-        # local variable
-            local pid
-       # store the pid into the local pid
+       # store the pid into kill_pid
 
-            pid=$(cat "$PID_FILE")
+           kill_pid=$(cat "$PID_FILE")
 
-          # stopp with local pid 
-            kill "$pid" 2>/dev/null && echo "[INFO] Daemon stopped (PID $pid)"
-            rm -f "$PID_FILE"
+         
+            kill "$kill_pid" 2>/dev/null && echo -e "\033[31m[INFO] Daemon stopped\033[0m (PID $kill_pid)"
+          
+
+          rm -f "$PID_FILE"
         else
-            echo "[INFO] No PID file found — daemon may not be running"
+            echo -e " \033[31m(INFO) No PID file found — daemon may not be running \033[0m"
         fi
         ;;
       #  Status 
         status|Status|STATUS)
         if [[ -f "$PID_FILE" ]] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
-            echo "[INFO] Daemon is running (PID $(cat "$PID_FILE"))"
+            echo   "(INFO) Daemon is running (PID $(cat "$PID_FILE"))"
         else
-            echo "[INFO] Daemon is not running"
+            echo -e  "\033[31m(INFO) Daemon is not running\033[0m "
         fi
         ;;
     run|Run|RUN)
@@ -211,7 +225,7 @@ case $cmd in
          core_machine_loop
             ;; 
      *) # for unknown input 
-        show_Usage
+       show_usage 
         exit 1 
          ;; 
 
@@ -224,5 +238,5 @@ case $cmd in
 
 
 
-
-    
+# turning debugging off. can also use shell check 
+#set +x
