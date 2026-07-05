@@ -1,30 +1,27 @@
-# Disk Usage Daemon 
-# Author: Usman O. Olanrewaju (Blu3-Sky) 
-# 
+# Disk Usage Daemon
+# Author: Usman O. Olanrewaju (Blu3-Sky)
+#
 #
 # For Modification visit  man
-#  systemd.unit 
-#  systemd.service 
+#  systemd.unit
+#  systemd.service
 #
- 
-[Unit] 
+
+[Unit]
 Description=Disk Usage Daemon
-After=network.target multi-user.target NetworkManager.service 
+After=network.target multi-user.target NetworkManager.service
 
-[Service] 
+[Service]
 Type=simple
-ExecStart=/home/blue/bin/dsk-daemon.sh run
-ExecReload=/home/blue/bin/dsk-daemon.sh  Restart
-ExitType=main  
+ExecStart=/home/blue/bin/dsk-daemon.sh run RUN
+ExitType=main
 Restart=on-failure
-RestartSec=25ms 
+RestartSec=5s
 
 
 
-[Install] 
+[Install]
 WantedBy=multi-user.target
-
-
 
 
 
