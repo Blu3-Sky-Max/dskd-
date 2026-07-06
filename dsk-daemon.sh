@@ -9,10 +9,10 @@
 # AUTHOR: Usman O. Olanrewaju (Blu3-Sky) 
 # CREATED: 2026/06/08 
 #
-# STEPS USED: shoutout to  tlp for me using there steps for this deamon setups 
+# STEPS USED: shout out to  tlp for me using there steps for this deamon setups 
 #
 # PURPOSE: 
-# this deamon helps to manage mounted dir
+# this daemon helps to manage mounted Dir
 # lvm
 # autofs
 # nfs 
@@ -114,7 +114,7 @@ echo -e  "Daemon Started  [$(date '+%Y-%m-%d %I:%M:%S')]. Watching: "$WATCH_PATH
 
 # Output for logfile 
  
-echo -e  "\nDaemon Started [$(date '+%Y-%m-%d %I:%M:%S')]. Watchings: $WATCH_PATH Info: $(get_fs_info) " >> "$LOG_FILE"
+echo -e  "\nDaemon Started [$(date '+%Y-%m-%d %I:%M:%S')]. Watching: $WATCH_PATH Info: $(get_fs_info) " >> "$LOG_FILE"
 
 
 # Daemon running 
@@ -148,7 +148,7 @@ echo -e  "\nDaemon Started [$(date '+%Y-%m-%d %I:%M:%S')]. Watchings: $WATCH_PAT
         fi
 
 
-# thresold trigger setting i.e if the percentage grows beyond the warn percent it triggers 
+# threshold trigger setting i.e if the percentage grows beyond the warn percent it triggers 
 if (( fs_used_pct >= WARN_PERCENT )); then
 
 breaks="(Warning)[$Set_timestamp] Filesystem at ${fs_used_pct}% — threshold IS SAME AS ${WARN_PERCENT}% and unmounted"
@@ -204,7 +204,7 @@ kill_pid=
 
 PID_FILE="/tmp/dsk-daemon.pid"
    
-# when you run for the firs time ./dsk-daemon it takes 1 as an arugment cmd=start
+# when you run for the firs time ./dsk-daemon it takes 1 as an argument cmd=start
 #  without no option/argument it cmd=run
 
 cmd="${1:-run}"
