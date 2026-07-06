@@ -1,8 +1,6 @@
-# Disk Daemon Management 
+# dskd
 
-A lightweight Bash daemon for monitoring disk usage on a configured path, with threshold alerting and automatic log rotation.
-
-**Status:** Testing
+A lightweight Bash daemon for monitoring disk usage on a configured path, with threshold alerting, automatic log rotation, and automatic unmount when usage meets or exceeds the configured threshold.
 
 ---
 
@@ -13,56 +11,64 @@ A lightweight Bash daemon for monitoring disk usage on a configured path, with t
 - Records the size of a watched directory (`du`)
 - Records the percentage used of the filesystem containing it (`df`)
 - Appends a timestamped entry to a log file
-- Raises a `[WARN]` entry if filesystem usage crosses a configured threshold
+- Raises a `[WARN]` entry if filesystem usage crosses the configured threshold
+- Unmounts the watched path automatically if usage meets or exceeds the threshold
 - Rotates the log file once it grows past a configured line count
-
-## Files
-
-- **`dsk-daemon.sh`** — the daemon itself: monitor loop, alerting, log rotation, lifecycle commands (`start` / `stop` / `status` / `run`)
-- **`dskd.conf`** — all tunable values (watch path, log file, interval, threshold, rotation size)
-- **`dskd.service`** — systemd unit for running as a managed service
 
 ## Configuration
 
-All settings live in `dskd.conf`, sourced by the daemon at startup:
+All settings live in `dsk-daemon.conf`, sourced by the daemon at startup:
 
 | Variable | Description |
 |---|---|
 | `WATCH_PATH` | Directory to monitor |
 | `LOG_FILE` | Path to the usage log |
-| `Dang` | Seconds between checks |
-| `WARN_PERCENT` | Filesystem usage % that triggers a warning |
+| `INTERVAL` | Seconds between each check |
+| `WARN_PERCENT` | Filesystem usage % that triggers a warning and unmount |
 | `MAX_LOG_LINES` | Log rotates once it exceeds this many lines |
 
-## Usage
+## Installation
 
+**1. Copy the systemd unit file:**
 ```bash
-# Run in foreground (useful while testing)
-./dsk-daemon.sh run
-
-# Run in background
-./dsk-daemon.sh start
-
-# Check if it's running
-./dsk-daemon.sh status
-
-# Stop it
-./dsk-daemon.sh stop
+sudo cp dsk-daemon.service /etc/systemd/system/
 ```
 
-## Running as a systemd service
+**2. Set the correct paths inside the unit file:**
+
+Open `dsk-daemon.service` and update `ExecStart` to point to your script and config:
+```bash
+ExecStart=/path/to/dsk-daemon.sh run
+```
+
+**3. Ensure the script is executable:**
+```bash
+chmod +x dsk-daemon.sh
+```
+
+**4. Edit the config file:**
+
+Add your paths and settings to match your machine:
 
 ```bash
-sudo cp dskd.service /etc/systemd/system/
+vi dsk-daemon.conf
+``` 
+
+**5. Reload systemd and start the daemon:**
+```bash
 sudo systemctl daemon-reload
-sudo systemctl enable --now dskd
+sudo systemctl enable --now dsk-daemon
 ```
 
-
+**6. Verify it is running:**
+```bash
+sudo systemctl status dskd
+```
 
 ## Acknowledgements
 
-Daemon lifecycle structure (start/stop/status/run/restart via PID file, systemd unit layout) adapted from steps shared by tlp.
+Daemon lifecycle structure (start/stop/status/run via PID file, systemd unit layout) adapted from steps shared by tlp.
 
 ---
+
 Copyright © 2026 Usman Olanrewaju. Licensed under the MIT License — see [LICENSE](./LICENSE) for details.
