@@ -9,10 +9,10 @@
 # AUTHOR: Usman O. Olanrewaju (Blu3-Sky) 
 # CREATED: 2026/06/08 
 #
-# STEPS USED: shout out to  tlp for me using there steps for this deamon setups 
+# STEPS USED: shoutout to  tlp for me using there steps for this deamon setups 
 #
 # PURPOSE: 
-# this daemon helps to manage mounted Dir
+# this deamon helps to manage mounted dir
 # lvm
 # autofs
 # nfs 
@@ -22,15 +22,17 @@
 
 # locator for config
 
-Locator="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONF_FILE="$Locator/dsk-daemon.conf"
+#Locator="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+#CONF_FILE="$Locator/dsk-daemon.conf"
 
-if [ ! -f "$CONF_FILE" ]; then 
-	    echo "Configuration file not found: $CONF_FILE"   
-	exit 20
+#if [ ! -f "$CONF_FILE" ]; then 
+#	    echo "Configuration file not found: $CONF_FILE"   
+#	exit 20
 
-  fi 
-
+#  fi
+ 
+CONF_FILE=/usr/local/bin/dsk-daemon.conf 
+ 
 # source lib/conf
  . "$CONF_FILE"
 
@@ -87,7 +89,7 @@ rotate_log_if_needed() {
         lines=$(wc -l < "$LOG_FILE")
 
 
-# lines is beyond default size 250  the it rotate 
+# lines is beyond default size then  it rotate 
 
         if (( lines > MAX_LOG_LINES )); then
 
@@ -114,7 +116,7 @@ echo -e  "Daemon Started  [$(date '+%Y-%m-%d %I:%M:%S')]. Watching: "$WATCH_PATH
 
 # Output for logfile 
  
-echo -e  "\nDaemon Started [$(date '+%Y-%m-%d %I:%M:%S')]. Watching: $WATCH_PATH Info: $(get_fs_info) " >> "$LOG_FILE"
+echo -e  "\nDaemon Started [$(date '+%Y-%m-%d %I:%M:%S')]. Watchings: $WATCH_PATH Info: $(get_fs_info) " >> "$LOG_FILE"
 
 
 # Daemon running 
@@ -148,7 +150,7 @@ echo -e  "\nDaemon Started [$(date '+%Y-%m-%d %I:%M:%S')]. Watching: $WATCH_PATH
         fi
 
 
-# threshold trigger setting i.e if the percentage grows beyond the warn percent it triggers 
+# thresold trigger setting i.e if the percentage grows beyond the warn percent it triggers 
 if (( fs_used_pct >= WARN_PERCENT )); then
 
 breaks="(Warning)[$Set_timestamp] Filesystem at ${fs_used_pct}% — threshold IS SAME AS ${WARN_PERCENT}% and unmounted"
@@ -189,9 +191,12 @@ else
 
         fi
 fi  
-   sleep "$Dang" 
 #check log file in every iteration 
 rotate_log_if_needed
+
+
+ sleep "$Dang"
+ 
 done
 
 
@@ -204,7 +209,7 @@ kill_pid=
 
 PID_FILE="/tmp/dsk-daemon.pid"
    
-# when you run for the firs time ./dsk-daemon it takes 1 as an argument cmd=start
+# when you run for the firs time ./dsk-daemon it takes 1 as an arugment cmd=start
 #  without no option/argument it cmd=run
 
 cmd="${1:-run}"
