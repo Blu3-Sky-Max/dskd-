@@ -14,7 +14,7 @@
 # Allow only root
 
  if [ $EUID != 0 ] ; then 
- echo -e "\033[31m$0Installer needs the root \033[0m" 
+ echo -e "\033[31m[Error]: root privileges required \033[0m" 
   exit 19 
 fi 
 
@@ -53,10 +53,15 @@ if [ "$missing" -eq 1 ]; then
 
 
 fi
+Conf_handler="/etc/dskd" 
+
+if [ ! -d "$Conf_handler" ] ; then 
+ mkdir $Conf_handler 
+fi 
  echo "--> --> All Required Files Found  <-- <-- " 
 
 cp $File    "/usr/local/bin/." 
-cp $Conf    "/usr/local/bin/." 
+cp $Conf    "$Conf_handler/." 
 cp $Service "/etc/systemd/system/."
 
 
