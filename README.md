@@ -1,6 +1,6 @@
 # dskd
 
-A lightweight Bash daemon for monitoring disk usage on a configured path, with threshold alerting, automatic log rotation, and automatic unmount when usage meets or exceeds the configured threshold.
+A lightweight Bash daemon for monitoring disk usage with configurable thresholds, automatic log rotation, and auto-unmount on threshold breach.
 
 ---
 
@@ -29,40 +29,51 @@ All settings live in `dsk-daemon.conf`, sourced by the daemon at startup:
 
 ## Installation
 
-**1. Copy the systemd unit file:**
+**1. Clone the repository:**
 ```bash
-sudo cp dsk-daemon.service /etc/systemd/system/
+git clone https://github.com/Blu3-Sky-Max/dskd-
+cd dskd-
 ```
 
-**2. Set the correct paths inside the unit file:**
-
-Open `dsk-daemon.service` and update `ExecStart` to point to your script and config:
+**2. Make the installer executable:**
 ```bash
-ExecStart=/path/to/dsk-daemon.sh run
+chmod +x install.sh
 ```
 
-**3. Ensure the script is executable:**
-```bash
-chmod +x dsk-daemon.sh
-```
-
-**4. Edit the config file:**
+**3. Edit the config file:**
 
 Add your paths and settings to match your machine:
-
 ```bash
 vi dsk-daemon.conf
-``` 
-
-**5. Reload systemd and start the daemon:**
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable --now dsk-daemon
 ```
 
-**6. Verify it is running:**
+**4. Run the installer as root:**
 ```bash
-sudo systemctl status dskd
+sudo ./install.sh
+```
+
+The installer will:
+- Check all required files are present
+- Copy the daemon to `/usr/local/bin/`
+- Copy the config to `/etc/dskd/`
+- Copy the service unit to `/etc/systemd/system/`
+- Enable and start the daemon via systemd
+
+**5. Verify the daemon is running:**
+```bash
+sudo systemctl status dsk-daemon
+```
+
+## CleanUp
+
+To stop and remove dskd from your system:
+
+```bash
+sudo systemctl disable --now dsk-daemon
+sudo rm /usr/local/bin/dsk-daemon
+sudo rm -rf /etc/dskd
+sudo rm /etc/systemd/system/dsk-daemon.service
+sudo systemctl daemon-reload
 ```
 
 ## Acknowledgements
