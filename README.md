@@ -49,7 +49,7 @@ vi dsk-daemon.conf
 
 **4. Run the installer as root:**
 ```bash
-sudo ./install.sh
+sudo ./dsk-install.sh
 ```
 
 The installer will:
