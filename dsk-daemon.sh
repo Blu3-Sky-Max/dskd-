@@ -31,7 +31,7 @@
 
 #  fi
  
-CONF_FILE=/usr/local/bin/dsk-daemon.conf 
+CONF_FILE=/etc/dskd/dsk-daemon.conf 
  
 # source lib/conf
  . "$CONF_FILE"
