@@ -76,6 +76,9 @@ sudo rm /etc/systemd/system/dsk-daemon.service
 sudo systemctl daemon-reload
 ```
 
+**Expected output:**
+
+![dsk-install output](./Ink/dsk-install-output.png)
 ## Acknowledgements
 
 Daemon lifecycle structure (start/stop/status/run via PID file, systemd unit layout) adapted from steps shared by tlp.
