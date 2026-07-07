@@ -58,11 +58,8 @@ The installer will:
 - Copy the config to `/etc/dskd/`
 - Copy the service unit to `/etc/systemd/system/`
 - Enable and start the daemon via systemd
+- Show status of daemon 
 
-**5. Verify the daemon is running:**
-```bash
-sudo systemctl status dsk-daemon
-```
 
 ## CleanUp
 
