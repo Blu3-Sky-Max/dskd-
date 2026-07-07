@@ -37,7 +37,7 @@ cd dskd-
 
 **2. Make the installer executable:**
 ```bash
-chmod +x install.sh
+chmod +x dsk-install.sh
 ```
 
 **3. Edit the config file:**
