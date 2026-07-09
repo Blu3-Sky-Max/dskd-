@@ -23,7 +23,7 @@ All settings live in `dsk-daemon.conf`, sourced by the daemon at startup:
 |---|---|
 | `WATCH_PATH` | Directory to monitor |
 | `LOG_FILE` | Path to the usage log |
-| `INTERVAL` | Seconds between each check |
+| `Dang` | Seconds between each check |
 | `WARN_PERCENT` | Filesystem usage % that triggers a warning and unmount |
 | `MAX_LOG_LINES` | Log rotates once it exceeds this many lines |
 
